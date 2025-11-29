@@ -31,3 +31,4 @@ tmp/
 # Drafts and local-only files
 /.env.local
 .env.*
+!.env.example
