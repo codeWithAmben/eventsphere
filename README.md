@@ -1,215 +1,30 @@
-# EventSphere
+# EventSphere (Clean)
 
-EventSphere is a lightweight PHP-based events management prototype built for demos, learning, and small-scale event management. It uses simple XML storage (under /data) and includes features such as web-based event creation, schedule management, attendees management, and Google SSO (OAuth2) for user authentication.
+EventSphere is a lightweight PHP-based events management prototype for demos and learning.
 
----
+## Quick Summary
 
-## 🔎 Project Overview
-- Language: PHP (procedural), HTML and minimal JS
-- Storage: XML files in `data/` (e.g., `users.xml`, `events.xml`, `tickets.xml`)
-- Frontend: TailwindCSS (CDN), Google Fonts, Lucide icons
-- OAuth SSO: Google OAuth2 (OpenID Connect) integration
+- Language: PHP (procedural)
+- Storage: XML under `data/`
+- UI: TailwindCSS + Google Fonts + Lucide icons
+- SSO: Google OAuth2 (OpenID Connect)
 
----
+## Dev quick start
 
-## 🚀 Quick Start (Local Development)
-### Requirements
-- PHP 8+ with cURL and OpenSSL extensions enabled
-- Composer (optional, recommended for PHPMailer/TCPDF)
-- Web server (XAMPP/Apache) or PHP built-in server
+1. Copy `.env.example` → `.env` and set your Google credentials.
+2. (Optional) `composer install`.
+3. `php -S localhost:8000 -t .` and visit `http://localhost:8000/eventsphere/`.
 
-### Install Dependencies
-If you plan to use email (PHPMailer) or PDF export (TCPDF), install composer packages:
+## SSO paths
 
-Windows PowerShell (from project root):
+- `sso_google.php` — start oauth
+- `sso_callback.php` — canonical callback
 
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"; php composer-setup.php; php -r "unlink('composer-setup.php');"; php composer.phar install
+## Notes
 
-Or using composer directly if installed:
-
-composer install
-
-### Run Locally (Recommended: PHP Built-in Server)
-Open PowerShell and from the project root run:
-
-php -S localhost:8000 -t .
-
-Open in your browser: http://localhost:8000/eventsphere/
-
-> Note: If you run on a different port or host, ensure the callback/redirect URI registered in Google Cloud Console matches exactly (including scheme, host, port, and path).
+- Keep `.env` out of Git.
+- Remove any committed secrets from history and rotate them.
 
 ---
 
-## ⚙️ Configuration (.env)
-Create a `.env` file in the project root (NOT committed to Git). Example env variables:
-
-```
-APP_ENV=development
-APP_DEBUG=1
-
-GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-# EventSphere
-
-EventSphere is a lightweight PHP-based events management prototype built for demos, learning, and small-scale event management. It uses simple XML storage under `/data/` and includes features such as web-based event creation, schedule management, attendee management, and Google SSO (OAuth2) for user authentication.
-
----
-
-## 🔎 Project Overview
-
-- **Language:** PHP (procedural)
-- **Storage:** XML files in `data/` (e.g., `users.xml`, `events.xml`, `tickets.xml`)
-- **Frontend:** TailwindCSS (CDN), Google Fonts, Lucide icons
-- **OAuth SSO:** Google OAuth2 (OpenID Connect)
-
----
-
-## 🚀 Quick Start (Local Development)
-
-### Requirements
-
-- PHP 8+ with the following extensions enabled: cURL, OpenSSL
-- Composer (optional — required for PHPMailer/TCPDF if you use mail/PDF features)
-- A web server (XAMPP/Apache) or the PHP built-in server for quick testing
-
-### Install Dependencies
-
-If you use email (PHPMailer) or PDF export (TCPDF), install dependencies with Composer.
-
-Windows PowerShell (if Composer is not installed):
-
-```powershell
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"; php composer-setup.php; php -r "unlink('composer-setup.php');"; php composer.phar install
-```
-
-If Composer is installed on your machine:
-
-```bash
-composer install
-```
-
-### Run Locally (Recommended)
-
-Start the PHP built-in server from the project root:
-
-```bash
-php -S localhost:8000 -t .
-```
-
-Open your browser: http://localhost:8000/eventsphere/
-
-> Note: If you run on a different host/port, ensure the redirect URI you register with Google matches exactly (scheme, host, port, path).
-
----
-
-## ⚙️ Configuration (`.env`)
-
-Create a `.env` file in the project root (do NOT commit the real `.env` to git). Example:
-
-```dotenv
-APP_ENV=development
-APP_DEBUG=1
-
-GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-GOOGLE_REDIRECT_URI=http://localhost/eventsphere/sso_callback.php
-```
-
-Important:
-- Keep `.env` out of your repository and never commit your secrets.
-- If secrets were committed, rotate them and remove them from Git history using tools like the BFG Repo-Cleaner or `git filter-branch`.
-
----
-
-## 🔐 Google OAuth (SSO) Setup
-
-1. Go to Google Cloud Console → APIs & Services → Credentials → OAuth 2.0 Client IDs.
-2. Create a new OAuth Client (Web application) and set the Authorized redirect URI to the callback path used by the app — default: `http://localhost/eventsphere/sso_callback.php`.
-3. Copy the Client ID and Client Secret into your local `.env` as `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`.
-
-> The redirect URI must match exactly. If your dev server uses `http://127.0.0.1:8000`, use that exact URI in both the Console and `.env`.
-
----
-
-## 🧭 How SSO Works
-
-- `sso_google.php` — Entry point that builds the Google OAuth authorization URL and redirects users to Google for consent. If `APP_DEBUG=1` and you call `/eventsphere/sso_google.php?debug=1`, it will print the built URL for debugging.
-- `core/auth.php::ssoLogin` — Centralized SSO logic. Builds the auth URL, handles the OAuth callback, exchanges code for tokens, fetches userinfo, and maps/creates a local user record in `data/users.xml`.
-- `sso_callback.php` — Canonical callback wrapper that calls `Auth::ssoLogin()` and redirects the user based on their role (`dashboard.php` or `admin.php`).
-- `callback.php` — Legacy callback (previously used, included a hard-coded secret). Prefer `sso_callback.php` and remove `callback.php` when safe.
-
----
-
-## 🧪 Debugging & Troubleshooting (SSO)
-
-- Debug OAuth URL: Visit `/eventsphere/sso_google.php?debug=1` (requires `APP_DEBUG=1`).
-- `redirect_uri_mismatch`: This occurs when your registered redirect URI in Google Console does not match the `redirect_uri` built by the app. Fix by updating your `.env` and the Google Console auth client.
-- Ensure cURL & PHP session support are enabled.
-
----
-
-## 🔁 After SSO — Local user mapping
-
-- On successful SSO login, the app uses `core/auth.php::findOrCreateUserByEmail()` to find or create a user in `data/users.xml`.
-- The user record will have a randomly generated internal password and default `role` of `attendee`.
-
----
-
-## ✅ Security Recommendations
-
-- Do NOT commit `.env` to Git. Add `.env` to `.gitignore` and keep an `.env.example` with placeholder values.
-- Replace any hardcoded client secrets in code (e.g., `callback.php`) with environment variables.
-- Remove secrets from Git history if they were committed previously.
-- Consider using a database instead of XML for production.
-
----
-
-## 🗂 Key Files & Locations
-
-- `sso_google.php` — SSO entrypoint.
-- `sso_callback.php` — OAuth callback wrapper.
-- `core/auth.php` — Centralized login and SSO logic.
-- `core/env.php` — `.env` loader (for local development); `load_dotenv_single()`.
-- `data/users.xml` — User records (sensitive, ignored in `.gitignore`).
-- `login.php` & `register.php` — UI pages with SSO buttons.
-- `admin.php` — Admin-only features.
-- `callback.php` — Legacy callback; consider removing after migrating redirect URIs.
-
----
-
-## ♻️ Cleanup & Migration Steps (If secrets were committed)
-
-1. Add `.env` to `.gitignore` and delete the file from the repo history if committed.
-2. Rotate the Client Secret in the Google Console.
-3. Remove secrets from Git history using the BFG Repo-Cleaner or `git filter-repo`.
-
----
-
-## 🛠 Optional Improvements
-
-- Replace XML storage with a secure DB and use a robust data layer.
-- Add automated tests for SSO flows.
-- Consolidate callback logic and remove `callback.php`.
-- Add email confirmation/password reset using PHPMailer (Composer).
-
----
-
-## 🧑‍💻 Contributing
-
-Contributions are welcome. Open a PR and discuss big changes (security, secrets, DB storage) beforehand.
-
----
-
-## 📄 License
-
-MIT — Add a `LICENSE` file if you want to formalize it.
-
----
-
-Thanks for testing EventSphere! If you'd like, I can also:
-
-- Add a `.env.example` with placeholders (I already created one).
-- Add a `tools/` script to check redirect URI reachability.
-- Replace `callback.php` contents with a compatibility wrapper to `sso_callback.php` and deprecate the legacy file.
-
-If you’d like me to implement any of the above, tell me which option to start with.
+This is a minimal canonical README. Replace the main README with this if you prefer a concise version.
