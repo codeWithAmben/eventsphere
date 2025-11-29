@@ -1,6 +1,6 @@
 # EventSphere
 
-EventSphere is a lightweight PHP-based events management prototype built for demos, learning, and small-scale event management. It uses simple XML storage (under /data) and includes features such as web UI, basic ticketing, PDF export (optional), and Google SSO for authentication.
+EventSphere is a lightweight PHP-based events management prototype built for demos, learning, and small-scale event management. It uses simple XML storage (under /data) and includes features such as web UI, basic ticketing, PDF export (optional), and Google SSO for authentication. (THIS IS IN DEVELOPMENT)
 
 ---
 
@@ -139,3 +139,4 @@ Thanks for testing EventSphere! If you want, I can also:
 - Remove `callback.php` and consolidate SSO callback logic into a single canonical handler
 
 If any of the suggestions above would be helpful, tell me which one to start and I will implement it next. 🎯
+
