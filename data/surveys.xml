@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- surveys.xml: Survey and feedback responses -->
+<surveys>
+  <response id="1">
+    <event_id>evt001</event_id>
+    <user_id>1</user_id>
+    <rating>5</rating>
+    <comments>Great event!</comments>
+  </response>
+</surveys>

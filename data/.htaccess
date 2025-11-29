@@ -1,0 +1,12 @@
+# Prevent direct access to files inside this folder
+# This is important: The data folder stores XML files and should not be served directly
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order deny,allow
+  Deny from all
+</IfModule>
+# If you need to allow access by PHP scripts, they can open the file from disk.
+# Do NOT allow directory listings
+Options -Indexes

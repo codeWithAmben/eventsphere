@@ -1,0 +1,8 @@
+{
+  "name": "eventsphere/skeleton",
+  "description": "EventSphere skeleton for prototyping events management",
+  "require": {
+    "phpmailer/phpmailer": "^6.0",
+    "tecnickcom/tcpdf": "^6.0"
+  }
+}

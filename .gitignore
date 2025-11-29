@@ -1,0 +1,33 @@
+# EventSphere+ - Git ignore
+# Ignore environment config (contains secrets)
+.env
+
+# Ignore user data that may contain PII or sensitive info
+data/users.xml
+data/tickets.xml
+data/chat_logs.xml
+
+# Uploaded files (avatars, documents) - keep repo clean and protect user content
+uploads/
+
+# Composer / vendor
+/vendor/
+
+# Node and build outputs
+/node_modules/
+
+# IDE/editor
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and caches
+*.log
+tmp/
+
+# Drafts and local-only files
+/.env.local
+.env.*

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- events.xml: Sample schedule + event metadata -->
+<events>
+  <event id="evt001">
+    <title>Sample Event</title>
+    <date>2026-01-15T00:00</date>
+    <venue>Room A</venue>
+    <description>Welcome session</description>
+  <status>Scheduled</status><schedule><session><time>10am</time><title>test</title><speaker/></session></schedule></event>
+<event id="evt1764347271"><title>test</title><date>2025-11-29T03:27</date><venue>te</venue><description>ter</description><status>Scheduled</status></event><event id="evt1764414826"><date>2025-12-07T10:00</date><venue>Room A</venue><description>Test 123</description><schedule><session><time>10:00am</time><title>gen knowledge</title><speaker>Speaker</speaker></session></schedule><speakers><speaker><name>Juan Dela Cruz</name><role>Speaker</role></speaker></speakers></event></events>
